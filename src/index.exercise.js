@@ -78,7 +78,7 @@ function App() {
       <button onClick={openRegister}>Register</button>
 
       <Dialog aria-label="Login form" isOpen={openModal === 'login'}>
-        <DialogContent>
+        <DialogContent aria-label="Login form content">
           <div>
             <button onClick={() => setOpenModal('none')}>Close</button>
           </div>
@@ -88,11 +88,11 @@ function App() {
       </Dialog>
 
       <Dialog aria-label="Register form" isOpen={openModal === 'register'}>
-        <div>
+        <DialogContent aria-label="Register form content">
           <button onClick={() => setOpenModal('none')}>Close</button>
           <h3>Register</h3>
           <LoginForm onSubmit={register} buttonText="Register" />
-        </div>
+        </DialogContent>
       </Dialog>
     </>
   );
