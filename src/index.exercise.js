@@ -8,7 +8,7 @@ import {Logo} from './components/logo';
 import {Dialog, DialogContent} from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
-function LoginForm() {
+function LoginForm({onSubmit, buttonText}) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -20,17 +20,17 @@ function LoginForm() {
     setPassword(event.target.value);
   }
 
-  function onSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
 
     const usernameInput = event.target.username.value;
     const passwordInput = event.target.password.value;
 
-    console.log({usernameInput, passwordInput});
+    onSubmit({usernameInput, passwordInput});
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="username">Username:</label>
       <input
         id="username"
@@ -47,7 +47,7 @@ function LoginForm() {
         value={password}
         onChange={onPasswordChange}
       />
-      <button type="submit">Login</button>
+      <button type="submit">{buttonText}</button>
     </form>
   );
 }
@@ -62,20 +62,38 @@ function App() {
     setOpenModal('register');
   };
 
+  function login(data) {
+    console.log({data});
+  }
+
+  function register(data) {
+    console.log({data});
+  }
+
   return (
     <>
       <Logo />
       <h1>Bookshelf</h1>
       <button onClick={openLogin}>Login</button>
       <button onClick={openRegister}>Register</button>
-      {openModal === 'login' ? (
-        <Dialog>
-          <DialogContent>
-            <LoginForm />
-          </DialogContent>
-        </Dialog>
-      ) : null}
-      {openModal === 'register' ? <Dialog /> : null}
+
+      <Dialog aria-label="Login form" isOpen={openModal === 'login'}>
+        <DialogContent>
+          <div>
+            <button onClick={() => setOpenModal('none')}>Close</button>
+          </div>
+          <h3>Login</h3>
+          <LoginForm onSubmit={login} buttonText="Login" />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog aria-label="Register form" isOpen={openModal === 'register'}>
+        <div>
+          <button onClick={() => setOpenModal('none')}>Close</button>
+          <h3>Register</h3>
+          <LoginForm onSubmit={register} buttonText="Register" />
+        </div>
+      </Dialog>
     </>
   );
 }
