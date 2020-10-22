@@ -1,5 +1,9 @@
-import styled from '@emotion/styled'
-import {Dialog as ReachDialog} from '@reach/dialog'
+import styled from '@emotion/styled/macro';
+import {Dialog as ReachDialog} from '@reach/dialog';
+import {FaSpinner} from 'react-icons/fa';
+import {keyframes} from '@emotion/core';
+
+import * as colors from 'styles/colors';
 
 // 🐨 create a button styled component here called "Button"
 // make it look nice and allow it to support a "variant" prop which can be
@@ -30,15 +34,47 @@ import {Dialog as ReachDialog} from '@reach/dialog'
 //   background: '#f1f2f7',
 //   color: '#434449',
 
+const buttonVariants = {
+  primary: {
+    background: colors.indigo,
+    color: colors.base,
+  },
+  secondary: {
+    background: colors.gray10,
+    color: colors.text,
+  },
+};
+
+const Button = styled.button(({variant}) => {
+  return {
+    padding: '10px 15px',
+    border: '0',
+    lineHeight: '1',
+    borderRadius: '3px',
+    ...(buttonVariants[variant] || {}),
+  };
+});
+
 // Input
 //   borderRadius: '3px',
 //   border: '1px solid #f1f1f4',
 //   background: '#f1f2f7',
 //   padding: '8px 12px',
 
+const Input = styled.input({
+  borderRadius: '3px',
+  border: `1px solid ${colors.gray10}`,
+  background: colors.gray,
+  padding: '8px 12px',
+});
+
 // FormGroup
 //   display: 'flex',
 //   flexDirection: 'column',
+const FormGroup = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 // 💰 I'm giving a few of these to you:
 const CircleButton = styled.button({
@@ -50,11 +86,11 @@ const CircleButton = styled.button({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'white',
-  color: '#434449',
-  border: `1px solid #f1f1f4`,
+  background: colors.base,
+  color: colors.text,
+  border: `1px solid ${colors.gray10}`,
   cursor: 'pointer',
-})
+});
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',
@@ -66,6 +102,17 @@ const Dialog = styled(ReachDialog)({
     width: '100%',
     margin: '10vh auto',
   },
-})
+});
 
-export {CircleButton, Dialog}
+const spin = keyframes({
+  '0%': {transform: 'rotate(0deg)'},
+  '100%': {transform: 'rotate(360deg)'},
+});
+
+const Spinner = styled(FaSpinner)(({customAnimation}) => ({
+  /* styles here */
+  animation: `${spin} 1s ease infinite`,
+  ...customAnimation,
+}));
+
+export {CircleButton, Dialog, Button, Input, FormGroup, Spinner};
