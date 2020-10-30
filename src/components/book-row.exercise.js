@@ -1,25 +1,32 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 // 🐨 get useQuery from react-query
+import {useQuery} from 'react-query';
 // 🐨 you'll also need the client from 'utils/api-client'
-import * as mq from 'styles/media-queries'
-import * as colors from 'styles/colors'
-import {StatusButtons} from './status-buttons'
-import {Rating} from './rating'
+import {client} from 'utils/api-client';
+import * as mq from 'styles/media-queries';
+import * as colors from 'styles/colors';
+import {StatusButtons} from './status-buttons';
+import {Rating} from './rating';
 
 function BookRow({user, book}) {
-  const {title, author, coverImageUrl} = book
+  const {title, author, coverImageUrl} = book;
 
   // 🐨 call useQuery here to get the list item
   // queryKey should be 'list-items'
   // queryFn should be a call to the list-items endpoint
+  let {data: listItems} = useQuery({
+    queryKey: ['list-items', {bookId: book.id}],
+    queryFn: (key, {bookId}) =>
+      client(`list-items/${bookId}`).then(data => data),
+  });
 
   // 🐨 assign listItem to the list item that has the same bookId as the book.id
-  const listItem = null
+  const listItem = listItems.find(item => item.bookId === book.id);
 
-  const id = `book-row-book-${book.id}`
+  const id = `book-row-book-${book.id}`;
 
   return (
     <div
@@ -111,7 +118,7 @@ function BookRow({user, book}) {
         <StatusButtons user={user} book={book} />
       </div>
     </div>
-  )
+  );
 }
 
-export {BookRow}
+export {BookRow};
