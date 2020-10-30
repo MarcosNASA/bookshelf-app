@@ -1,4 +1,11 @@
 // 🐨 you don't need to do anything in this file for the exercise. This is
 // just here for the extra credit. See the instructions for more info.
 
-module.exports = () => {}
+function proxy(app) {
+  // add the redirect handler here
+  app.get(/\/$/, function (req, res) {
+    return res.redirect('/discover');
+  });
+}
+
+module.exports = proxy;

@@ -1,14 +1,14 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import React from 'react'
-import {Routes, Route, Link, useMatch} from 'react-router-dom'
-import {Button} from './components/lib'
-import * as mq from './styles/media-queries'
-import * as colors from './styles/colors'
-import {DiscoverBooksScreen} from './screens/discover'
-import {BookScreen} from './screens/book'
-import {NotFoundScreen} from './screens/not-found'
+import React from 'react';
+import {Routes, Route, Link, useMatch} from 'react-router-dom';
+import {Button} from './components/lib';
+import * as mq from './styles/media-queries';
+import * as colors from './styles/colors';
+import {DiscoverBooksScreen} from './screens/discover';
+import {BookScreen} from './screens/book';
+import {NotFoundScreen} from './screens/not-found';
 
 function AuthenticatedApp({user, logout}) {
   return (
@@ -51,11 +51,11 @@ function AuthenticatedApp({user, logout}) {
         </main>
       </div>
     </React.Fragment>
-  )
+  );
 }
 
 function NavLink(props) {
-  const match = useMatch(props.to)
+  const match = useMatch(props.to);
   return (
     <Link
       css={[
@@ -86,7 +86,7 @@ function NavLink(props) {
       ]}
       {...props}
     />
-  )
+  );
 }
 
 function Nav() {
@@ -115,7 +115,7 @@ function Nav() {
         </li>
       </ul>
     </nav>
-  )
+  );
 }
 
 function AppRoutes({user}) {
@@ -125,7 +125,7 @@ function AppRoutes({user}) {
       <Route path="/book/:bookId" element={<BookScreen user={user} />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
-  )
+  );
 }
 
-export {AuthenticatedApp}
+export {AuthenticatedApp};

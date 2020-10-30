@@ -1,15 +1,16 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
 // We're going to turn the entire book row into a link to the book page
 // 🐨 import the Link component from react-router-dom
-import * as mq from 'styles/media-queries'
-import * as colors from 'styles/colors'
+import {Link} from 'react-router-dom';
+import * as mq from 'styles/media-queries';
+import * as colors from 'styles/colors';
 
 function BookRow({book}) {
-  const {title, author, coverImageUrl} = book
+  const {title, author, coverImageUrl} = book;
 
-  const id = `book-row-book-${book.id}`
+  const id = `book-row-book-${book.id}`;
 
   return (
     <div
@@ -24,7 +25,8 @@ function BookRow({book}) {
           🐨 Turn this div into a Link
           and add a to prop to make it direct to `/book/${book.id}`
       */}
-      <div
+      <Link
+        to={`/book/${book.id}`}
         aria-labelledby={id}
         css={{
           minHeight: 270,
@@ -86,9 +88,9 @@ function BookRow({book}) {
           </div>
           <small>{book.synopsis.substring(0, 500)}...</small>
         </div>
-      </div>
+      </Link>
     </div>
-  )
+  );
 }
 
-export {BookRow}
+export {BookRow};
