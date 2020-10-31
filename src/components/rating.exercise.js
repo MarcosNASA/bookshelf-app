@@ -3,9 +3,10 @@ import {jsx} from '@emotion/core';
 
 import React from 'react';
 // 🐨 you'll need useMutation and queryCache from react-query
-import {useMutation, queryCache} from 'react-query';
+// import {useMutation, queryCache} from 'react-query';
 // 🐨 you'll also need the client from utils/api-client
-import {client} from '../utils/api-client';
+// import {client} from '../utils/api-client';
+import {useUpdateListItem} from 'utils/list-items';
 import {FaStar} from 'react-icons/fa';
 import * as colors from 'styles/colors';
 
@@ -28,13 +29,14 @@ function Rating({listItem, user}) {
   //   you can pass as data.
   // 💰 if you want to get the list-items cache updated after this query finishes
   // the use the `onSettled` config option to queryCache.invalidateQueries('list-items')
-  const [update] = useMutation(
-    updates =>
-      client(`list-items/${listItem.bookId}`, {data: updates, method: 'PUT'}),
-    {
-      onSettled: () => queryCache.invalidateQueries('list-items'),
-    },
-  );
+  // const [update] = useMutation(
+  //   updates =>
+  //     client(`list-items/${listItem.bookId}`, {data: updates, method: 'PUT'}),
+  //   {
+  //     onSettled: () => queryCache.invalidateQueries('list-items'),
+  //   },
+  // );
+  const [update] = useUpdateListItem(user);
 
   React.useEffect(() => {
     function handleKeyDown(event) {
