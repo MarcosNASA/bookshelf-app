@@ -1,6 +1,6 @@
 // - `useBook(bookId, user)`
 // - `useBookSearch(query, user)`
-import {useQuery} from 'react-query';
+import {useQuery, queryCache} from 'react-query';
 import {client} from './api-client';
 import bookPlaceholderSvg from 'assets/book-placeholder.svg';
 
@@ -38,4 +38,19 @@ function useBook(bookId, user) {
   return data ?? loadingBook;
 }
 
-export {useBook, useBookSearch};
+function refetchBookSearchQuery(user) {
+  queryCache.removeQueries('bookSearch');
+  queryCache.prefetchQuery(getBookSearchConfig('', user));
+}
+
+function getBookSearchConfig(query, user) {
+  return {
+    queryKey: ['bookSearch', {query}],
+    queryFn: () =>
+      client(`books?query=${encodeURIComponent(query)}`, {
+        token: user.token,
+      }).then(data => data.books),
+  };
+}
+
+export {useBook, useBookSearch, refetchBookSearchQuery};

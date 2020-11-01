@@ -4,7 +4,7 @@ import {jsx} from '@emotion/core';
 import React from 'react';
 import Tooltip from '@reach/tooltip';
 import {FaSearch, FaTimes} from 'react-icons/fa';
-import {useBookSearch} from 'utils/books';
+import {useBookSearch, refetchBookSearchQuery} from 'utils/books';
 // 🐨 you'll need useQuery from 'react-query'
 // import {useQuery} from 'react-query';
 // import {useAsync} from 'utils/hooks';
@@ -36,6 +36,10 @@ function DiscoverBooksScreen({user}) {
   //     }).then(data => data.books),
   //   );
   // }, [query, queried, run, user.token]);
+
+  React.useEffect(() => {
+    return () => refetchBookSearchQuery(user);
+  }, [user]);
 
   function handleSearchSubmit(event) {
     event.preventDefault();
