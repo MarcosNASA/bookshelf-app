@@ -53,4 +53,8 @@ function getBookSearchConfig(query, user) {
   };
 }
 
-export {useBook, useBookSearch, refetchBookSearchQuery};
+function setQueryDataForBook(book) {
+  queryCache.setQueryData(['book', {bookId: book.id}], book);
+}
+
+export {useBook, useBookSearch, refetchBookSearchQuery, setQueryDataForBook};
