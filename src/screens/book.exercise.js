@@ -15,19 +15,9 @@ import {useListItem, useUpdateListItem} from 'utils/list-items';
 import {formatDate} from 'utils/misc';
 import * as mq from 'styles/media-queries';
 import * as colors from 'styles/colors';
-import {Textarea} from 'components/lib';
+import {Textarea, ErrorMessage} from 'components/lib';
 import {Rating} from 'components/rating';
 import {StatusButtons} from 'components/status-buttons';
-import bookPlaceholderSvg from 'assets/book-placeholder.svg';
-
-const loadingBook = {
-  title: 'Loading...',
-  author: 'loading...',
-  coverImageUrl: bookPlaceholderSvg,
-  publisher: 'Loading Publishing',
-  synopsis: 'Loading...',
-  loadingBook: true,
-};
 
 function BookScreen({user}) {
   const {bookId} = useParams();
@@ -41,7 +31,7 @@ function BookScreen({user}) {
   //   queryKey: ['book', {bookId}],
   //   queryFn: client(`books/${bookId}`, {token: user.token}),
   // });
-  const book = useBook(bookId, user) ?? loadingBook;
+  const book = useBook(bookId, user);
 
   // 💣 remove the useEffect here (react-query will handle that now)
   // React.useEffect(() => {
@@ -145,7 +135,7 @@ function NotesTextarea({listItem, user}) {
   // 💰 if you want to get the list-items cache updated after this query finishes
   // the use the `onSettled` config option to queryCache.invalidateQueries('list-items')
   // 💣 DELETE THIS ESLINT IGNORE!! Don't ignore the exhaustive deps rule please
-  const [mutate] = useUpdateListItem(user);
+  const [mutate, {error, isError}] = useUpdateListItem(user);
   const debouncedMutate = React.useMemo(() => debounceFn(mutate, {wait: 300}), [
     mutate,
   ]);
@@ -169,6 +159,13 @@ function NotesTextarea({listItem, user}) {
         >
           Notes
         </label>
+        {isError ? (
+          <ErrorMessage
+            error={error}
+            variant="inline"
+            css={{marginLeft: 6, fontSize: '0.7em'}}
+          />
+        ) : null}
       </div>
       <Textarea
         id="notes"

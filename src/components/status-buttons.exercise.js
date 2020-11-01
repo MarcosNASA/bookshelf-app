@@ -25,10 +25,14 @@ import * as colors from 'styles/colors';
 import {CircleButton, Spinner} from './lib';
 
 function TooltipButton({label, highlight, onClick, icon, ...rest}) {
-  const {isLoading, isError, error, run} = useAsync();
+  const {isLoading, isError, error, run, reset} = useAsync();
 
   function handleClick() {
-    run(onClick());
+    if (isError) {
+      reset();
+    } else {
+      run(onClick());
+    }
   }
 
   return (
@@ -86,7 +90,7 @@ function StatusButtons({user, book}) {
   //     onSettled: () => queryCache.invalidateQueries('list-items'),
   //   },
   // );
-  const [update] = useUpdateListItem(user);
+  const [update] = useUpdateListItem(user, {throwOnError: true});
 
   // 🐨 call useMutation here and assign the mutate function to "remove"
   // the mutate function should call the list-items/:listItemId endpoint with a DELETE
@@ -96,7 +100,7 @@ function StatusButtons({user, book}) {
   //     onSettled: () => queryCache.invalidateQueries('list-items'),
   //   },
   // );
-  const [remove] = useRemoveListItem(user);
+  const [remove] = useRemoveListItem(user, {throwOnError: true});
 
   // 🐨 call useMutation here and assign the mutate function to "create"
   // the mutate function should call the list-items/:listItemId endpoint with a POST
@@ -107,7 +111,7 @@ function StatusButtons({user, book}) {
   //     onSettled: () => queryCache.invalidateQueries('list-items'),
   //   },
   // );
-  const [create] = useCreateListItem(user);
+  const [create] = useCreateListItem(user, {throwOnError: true});
 
   return (
     <React.Fragment>
@@ -119,7 +123,7 @@ function StatusButtons({user, book}) {
             // 🐨 add an onClick here that calls update with the data we want to update
             // 💰 to mark a list item as unread, set the finishDate to null
             // {id: listItem.id, finishDate: null}
-            onClick={update({id: listItem.id, finishDate: null})}
+            onClick={() => update({id: listItem.id, finishDate: null})}
             icon={<FaBook />}
           />
         ) : (
@@ -129,7 +133,7 @@ function StatusButtons({user, book}) {
             // 🐨 add an onClick here that calls update with the data we want to update
             // 💰 to mark a list item as unread, set the finishDate
             // {id: listItem.id, finishDate: Date.now()}
-            onClick={update({id: listItem.id, finishDate: Date.now()})}
+            onClick={() => update({id: listItem.id, finishDate: Date.now()})}
             icon={<FaCheckCircle />}
           />
         )
@@ -140,7 +144,7 @@ function StatusButtons({user, book}) {
           highlight={colors.danger}
           // 🐨 add an onClick here that calls remove
           // onClick={remove}
-          onClick={remove({id: listItem.id})}
+          onClick={() => remove({id: listItem.id})}
           icon={<FaMinusCircle />}
         />
       ) : (
@@ -149,7 +153,7 @@ function StatusButtons({user, book}) {
           highlight={colors.indigo}
           // 🐨 add an onClick here that calls create
           // onClick={create}
-          onClick={create({id: listItem.id})}
+          onClick={() => create({bookId: book.id})}
           icon={<FaPlusCircle />}
         />
       )}
