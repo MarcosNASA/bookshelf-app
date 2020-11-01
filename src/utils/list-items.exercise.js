@@ -32,6 +32,9 @@ function useListItem(user, bookId) {
 }
 
 const defaultMutationOptions = {
+  onError: (err, variables, recover) => {
+    return typeof recover === 'function' ? recover() : null;
+  },
   onSettled: () => queryCache.invalidateQueries('list-items'),
 };
 
@@ -43,14 +46,40 @@ function useUpdateListItem(user, customOptions) {
         data: updates,
         token: user.token,
       }),
-    {...defaultMutationOptions, ...customOptions},
+    {
+      onMutate(newItem) {
+        const previousItems = queryCache.getQueryData('list-items');
+
+        queryCache.setQueryData('list-items', old => {
+          return old.map(item => {
+            return item.id === newItem.id ? {...item, ...newItem} : item;
+          });
+        });
+
+        return () => queryCache.setQueryData('list-items', previousItems);
+      },
+      ...defaultMutationOptions,
+      ...customOptions,
+    },
   );
 }
 
 function useRemoveListItem(user, customOptions) {
   return useMutation(
     ({id}) => client(`list-items/${id}`, {method: 'DELETE', token: user.token}),
-    {...defaultMutationOptions, ...customOptions},
+    {
+      onMutate(removedItem) {
+        const previousItems = queryCache.getQueryData('list-items');
+
+        queryCache.setQueryData('list-items', old => {
+          return old.filter(item => item.id !== removedItem.id);
+        });
+
+        return () => queryCache.setQueryData('list-items', previousItems);
+      },
+      ...defaultMutationOptions,
+      ...customOptions,
+    },
   );
 }
 
