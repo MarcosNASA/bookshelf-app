@@ -1,30 +1,30 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
-import debounceFn from 'debounce-fn'
-import {FaRegCalendarAlt} from 'react-icons/fa'
-import Tooltip from '@reach/tooltip'
-import {useParams} from 'react-router-dom'
+import * as React from 'react';
+import debounceFn from 'debounce-fn';
+import {FaRegCalendarAlt} from 'react-icons/fa';
+import Tooltip from '@reach/tooltip';
+import {useParams} from 'react-router-dom';
 // 🐨 you'll need to get the AuthContext from 'context/auth-context'
-import {useBook} from 'utils/books'
-import {useListItem, useUpdateListItem} from 'utils/list-items'
-import {formatDate} from 'utils/misc'
-import * as mq from 'styles/media-queries'
-import * as colors from 'styles/colors'
-import {Spinner, Textarea, ErrorMessage} from 'components/lib'
-import {Rating} from 'components/rating'
-import {StatusButtons} from 'components/status-buttons'
+import {useBook} from 'utils/books';
+import {useListItem, useUpdateListItem} from 'utils/list-items';
+import {formatDate} from 'utils/misc';
+import * as mq from 'styles/media-queries';
+import * as colors from 'styles/colors';
+import {Spinner, Textarea, ErrorMessage} from 'components/lib';
+import {Rating} from 'components/rating';
+import {StatusButtons} from 'components/status-buttons';
 
 // 💣 remove the user prop
-function BookScreen({user}) {
-  const {bookId} = useParams()
+function BookScreen(/* {user} */) {
+  const {bookId} = useParams();
   // 💣 remove the user argument
-  const book = useBook(bookId, user)
+  const book = useBook(bookId /*, user */);
   // 💣 remove the user argument
-  const listItem = useListItem(bookId, user)
+  const listItem = useListItem(bookId /*, user */);
 
-  const {title, author, coverImageUrl, publisher, synopsis} = book
+  const {title, author, coverImageUrl, publisher, synopsis} = book;
 
   return (
     <div>
@@ -68,7 +68,7 @@ function BookScreen({user}) {
               {book.loadingBook ? null : (
                 <StatusButtons
                   // 💣 remove the user prop here
-                  user={user}
+                  // user={user}
                   book={book}
                 />
               )}
@@ -78,7 +78,7 @@ function BookScreen({user}) {
             {listItem?.finishDate ? (
               <Rating
                 // 💣 remove the user prop here
-                user={user}
+                // user={user}
                 listItem={listItem}
               />
             ) : null}
@@ -91,18 +91,18 @@ function BookScreen({user}) {
       {!book.loadingBook && listItem ? (
         <NotesTextarea
           // 💣 remove the user prop here
-          user={user}
+          // user={user}
           listItem={listItem}
         />
       ) : null}
     </div>
-  )
+  );
 }
 
 function ListItemTimeframe({listItem}) {
   const timeframeLabel = listItem.finishDate
     ? 'Start and finish date'
-    : 'Start date'
+    : 'Start date';
 
   return (
     <Tooltip label={timeframeLabel}>
@@ -114,19 +114,19 @@ function ListItemTimeframe({listItem}) {
         </span>
       </div>
     </Tooltip>
-  )
+  );
 }
 
 // 💣 remove the user prop here
-function NotesTextarea({listItem, user}) {
+function NotesTextarea({listItem /*, user */}) {
   // 💣 remove the user argument here
-  const [mutate, {error, isError, isLoading}] = useUpdateListItem(user)
+  const [mutate, {error, isError, isLoading}] = useUpdateListItem(/* user */);
   const debouncedMutate = React.useMemo(() => debounceFn(mutate, {wait: 300}), [
     mutate,
-  ])
+  ]);
 
   function handleNotesChange(e) {
-    debouncedMutate({id: listItem.id, notes: e.target.value})
+    debouncedMutate({id: listItem.id, notes: e.target.value});
   }
 
   return (
@@ -160,7 +160,7 @@ function NotesTextarea({listItem, user}) {
         css={{width: '100%', minHeight: 300}}
       />
     </React.Fragment>
-  )
+  );
 }
 
-export {BookScreen}
+export {BookScreen};

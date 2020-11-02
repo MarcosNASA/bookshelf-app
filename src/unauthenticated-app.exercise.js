@@ -1,25 +1,32 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
-import {Input, Button, Spinner, FormGroup, ErrorMessage} from './components/lib'
-import {Modal, ModalContents, ModalOpenButton} from './components/modal'
-import {Logo} from './components/logo'
+import * as React from 'react';
+import {
+  Input,
+  Button,
+  Spinner,
+  FormGroup,
+  ErrorMessage,
+} from './components/lib';
+import {Modal, ModalContents, ModalOpenButton} from './components/modal';
+import {Logo} from './components/logo';
 // 🐨 get AuthContext from ./context/auth-context
-import {useAsync} from './utils/hooks'
+import {useAuth} from './context/auth-context';
+import {useAsync} from './utils/hooks';
 
 function LoginForm({onSubmit, submitButton}) {
-  const {isLoading, isError, error, run} = useAsync()
+  const {isLoading, isError, error, run} = useAsync();
   function handleSubmit(event) {
-    event.preventDefault()
-    const {username, password} = event.target.elements
+    event.preventDefault();
+    const {username, password} = event.target.elements;
 
     run(
       onSubmit({
         username: username.value,
         password: password.value,
       }),
-    )
+    );
   }
 
   return (
@@ -56,13 +63,14 @@ function LoginForm({onSubmit, submitButton}) {
       </div>
       {isError ? <ErrorMessage error={error} /> : null}
     </form>
-  )
+  );
 }
 
 // you'll no longer receive the login and register functions as props
 // 💣 remove the props
-function UnauthenticatedApp({login, register}) {
+function UnauthenticatedApp(/* {login, register} */) {
   // 🐨 get login and register from the AuthContext using useContext
+  const {login, register} = useAuth();
   return (
     <div
       css={{
@@ -107,7 +115,7 @@ function UnauthenticatedApp({login, register}) {
         </Modal>
       </div>
     </div>
-  )
+  );
 }
 
-export {UnauthenticatedApp}
+export {UnauthenticatedApp};

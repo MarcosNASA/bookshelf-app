@@ -130,7 +130,7 @@ function AppProviders({children}) {
         <Provider3>{children}</Provider3>
       </Provider2>
     </Provider1>
-  )
+  );
 }
 ```
 
@@ -155,7 +155,7 @@ version of:
 ```javascript
 // token comes from useAuth().user.token
 function authenticatedClient(endpoint, config) {
-  return client(endpoint, {...config, token})
+  return client(endpoint, {...config, token});
 }
 ```
 

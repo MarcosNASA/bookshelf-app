@@ -1,21 +1,21 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import {Link} from 'react-router-dom'
-import {useListItem} from 'utils/list-items'
-import * as mq from 'styles/media-queries'
-import * as colors from 'styles/colors'
-import {StatusButtons} from './status-buttons'
-import {Rating} from './rating'
+import {Link} from 'react-router-dom';
+import {useListItem} from 'utils/list-items';
+import * as mq from 'styles/media-queries';
+import * as colors from 'styles/colors';
+import {StatusButtons} from './status-buttons';
+import {Rating} from './rating';
 
 // 💣 remove the user prop
 // the children components that needed it can get it from context
-function BookRow({user, book}) {
-  const {title, author, coverImageUrl} = book
+function BookRow({/* user, */ book}) {
+  const {title, author, coverImageUrl} = book;
 
-  const listItem = useListItem(book.id)
+  const listItem = useListItem(book.id);
 
-  const id = `book-row-book-${book.id}`
+  const id = `book-row-book-${book.id}`;
 
   return (
     <div
@@ -76,7 +76,7 @@ function BookRow({user, book}) {
               {listItem?.finishDate ? (
                 <Rating
                   // 💣 remove the user prop here
-                  user={user}
+                  // user={user}
                   listItem={listItem}
                 />
               ) : null}
@@ -110,12 +110,12 @@ function BookRow({user, book}) {
       >
         <StatusButtons
           // 💣 remove the user prop here
-          user={user}
+          // user={user}
           book={book}
         />
       </div>
     </div>
-  )
+  );
 }
 
-export {BookRow}
+export {BookRow};

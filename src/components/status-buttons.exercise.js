@@ -1,30 +1,30 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   FaCheckCircle,
   FaPlusCircle,
   FaMinusCircle,
   FaBook,
-} from 'react-icons/fa'
-import {FaTimesCircle} from 'react-icons/fa'
-import Tooltip from '@reach/tooltip'
+} from 'react-icons/fa';
+import {FaTimesCircle} from 'react-icons/fa';
+import Tooltip from '@reach/tooltip';
 import {
   useListItem,
   useUpdateListItem,
   useCreateListItem,
   useRemoveListItem,
-} from 'utils/list-items'
-import * as colors from 'styles/colors'
-import {useAsync} from 'utils/hooks'
-import {CircleButton, Spinner} from './lib'
+} from 'utils/list-items';
+import * as colors from 'styles/colors';
+import {useAsync} from 'utils/hooks';
+import {CircleButton, Spinner} from './lib';
 
 function TooltipButton({label, highlight, onClick, icon, ...rest}) {
-  const {isLoading, isError, error, run} = useAsync()
+  const {isLoading, isError, error, run} = useAsync();
 
   function handleClick() {
-    run(onClick())
+    run(onClick());
   }
 
   return (
@@ -48,16 +48,16 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
         {isLoading ? <Spinner /> : isError ? <FaTimesCircle /> : icon}
       </CircleButton>
     </Tooltip>
-  )
+  );
 }
 
 // 💣 remove user from the props
-function StatusButtons({user, book}) {
+function StatusButtons({/* user, */ book}) {
   // 💣 remove the user from all these function calls
-  const listItem = useListItem(book.id, user)
-  const [update] = useUpdateListItem(user, {throwOnError: true})
-  const [remove] = useRemoveListItem(user, {throwOnError: true})
-  const [create] = useCreateListItem(user, {throwOnError: true})
+  const listItem = useListItem(book.id /* user */);
+  const [update] = useUpdateListItem(/* user, */ {throwOnError: true});
+  const [remove] = useRemoveListItem(/* user, */ {throwOnError: true});
+  const [create] = useCreateListItem(/* user, */ {throwOnError: true});
 
   return (
     <React.Fragment>
@@ -94,7 +94,7 @@ function StatusButtons({user, book}) {
         />
       )}
     </React.Fragment>
-  )
+  );
 }
 
-export {StatusButtons}
+export {StatusButtons};

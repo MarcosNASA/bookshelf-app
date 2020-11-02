@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
-import {useUpdateListItem} from 'utils/list-items'
-import {FaStar} from 'react-icons/fa'
-import * as colors from 'styles/colors'
-import {ErrorMessage} from 'components/lib'
+import * as React from 'react';
+import {useUpdateListItem} from 'utils/list-items';
+import {FaStar} from 'react-icons/fa';
+import * as colors from 'styles/colors';
+import {ErrorMessage} from 'components/lib';
 
 const visuallyHiddenCSS = {
   border: '0',
@@ -16,28 +16,28 @@ const visuallyHiddenCSS = {
   padding: '0',
   position: 'absolute',
   width: '1px',
-}
+};
 // 💣 remove the user prop
-function Rating({listItem, user}) {
-  const [isTabbing, setIsTabbing] = React.useState(false)
+function Rating({listItem /*, user */}) {
+  const [isTabbing, setIsTabbing] = React.useState(false);
   // 💣 we no longer need to pass the user here:
-  const [update, {error, isError}] = useUpdateListItem(user)
+  const [update, {error, isError}] = useUpdateListItem(/* user */);
 
   React.useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === 'Tab') {
-        setIsTabbing(true)
+        setIsTabbing(true);
       }
     }
-    document.addEventListener('keydown', handleKeyDown, {once: true})
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
+    document.addEventListener('keydown', handleKeyDown, {once: true});
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-  const rootClassName = `list-item-${listItem.id}`
+  const rootClassName = `list-item-${listItem.id}`;
 
   const stars = Array.from({length: 5}).map((x, i) => {
-    const ratingId = `rating-${listItem.id}-${i}`
-    const ratingValue = i + 1
+    const ratingId = `rating-${listItem.id}-${i}`;
+    const ratingValue = i + 1;
     return (
       <React.Fragment key={i}>
         <input
@@ -47,7 +47,7 @@ function Rating({listItem, user}) {
           value={ratingValue}
           checked={ratingValue === listItem.rating}
           onChange={() => {
-            update({id: listItem.id, rating: ratingValue})
+            update({id: listItem.id, rating: ratingValue});
           }}
           css={[
             visuallyHiddenCSS,
@@ -86,8 +86,8 @@ function Rating({listItem, user}) {
           <FaStar css={{width: '16px', margin: '0 2px'}} />
         </label>
       </React.Fragment>
-    )
-  })
+    );
+  });
   return (
     <div
       onClick={e => e.stopPropagation()}
@@ -109,7 +109,7 @@ function Rating({listItem, user}) {
         />
       ) : null}
     </div>
-  )
+  );
 }
 
-export {Rating}
+export {Rating};

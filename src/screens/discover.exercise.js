@@ -1,38 +1,39 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
-import Tooltip from '@reach/tooltip'
-import {FaSearch, FaTimes} from 'react-icons/fa'
+import * as React from 'react';
+import Tooltip from '@reach/tooltip';
+import {FaSearch, FaTimes} from 'react-icons/fa';
 // 🐨 swap refetchBookSearchQuery with the new useRefetchBookSearchQuery
-import {useBookSearch, refetchBookSearchQuery} from 'utils/books'
-import * as colors from 'styles/colors'
-import {BookRow} from 'components/book-row'
-import {BookListUL, Spinner, Input} from 'components/lib'
+import {useBookSearch, useRefetchBookSearchQuery} from 'utils/books';
+import * as colors from 'styles/colors';
+import {BookRow} from 'components/book-row';
+import {BookListUL, Spinner, Input} from 'components/lib';
 
 // 💣 remove the user prop here
-function DiscoverBooksScreen({user}) {
-  const [query, setQuery] = React.useState('')
-  const [queried, setQueried] = React.useState(false)
+function DiscoverBooksScreen(/* {user} */) {
+  const [query, setQuery] = React.useState('');
+  const [queried, setQueried] = React.useState(false);
   // 💣 remove the user argument here
-  const {books, error, status} = useBookSearch(query, user)
+  const {books, error, status} = useBookSearch(query /*, user */);
   // 🐨 use the new useRefetchBookSearchQuery to get the
   // refetchBookSearchQuery function which handles accessing the user
+  const refetchBookSearchQuery = useRefetchBookSearchQuery();
 
   React.useEffect(() => {
     // 💣 remove the user prop here
-    return () => refetchBookSearchQuery(user)
+    return () => refetchBookSearchQuery(/* user */);
     // 💣 remove the user dependency here and add refetchBookSearchQuery instead
-  }, [user])
+  }, [refetchBookSearchQuery /*, user */]);
 
-  const isLoading = status === 'loading'
-  const isSuccess = status === 'success'
-  const isError = status === 'error'
+  const isLoading = status === 'loading';
+  const isSuccess = status === 'success';
+  const isError = status === 'error';
 
   function handleSearchSubmit(event) {
-    event.preventDefault()
-    setQueried(true)
-    setQuery(event.target.elements.search.value)
+    event.preventDefault();
+    setQueried(true);
+    setQuery(event.target.elements.search.value);
   }
 
   return (
@@ -98,7 +99,7 @@ function DiscoverBooksScreen({user}) {
               <li key={book.id}>
                 <BookRow
                   // 💣 remove the user prop here
-                  user={user}
+                  // user={user}
                   key={book.id}
                   book={book}
                 />
@@ -110,7 +111,7 @@ function DiscoverBooksScreen({user}) {
         )
       ) : null}
     </div>
-  )
+  );
 }
 
-export {DiscoverBooksScreen}
+export {DiscoverBooksScreen};
