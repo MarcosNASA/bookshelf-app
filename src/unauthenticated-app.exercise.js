@@ -1,25 +1,31 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
-import {Input, Button, Spinner, FormGroup, ErrorMessage} from './components/lib'
-import {Modal, ModalContents, ModalOpenButton} from './components/modal'
-import {Logo} from './components/logo'
-import {useAuth} from './context/auth-context'
-import {useAsync} from './utils/hooks'
+import * as React from 'react';
+import {
+  Input,
+  Button,
+  Spinner,
+  FormGroup,
+  ErrorMessage,
+} from './components/lib';
+import {Modal, ModalContents, ModalOpenButton} from './components/modal';
+import {Logo} from './components/logo';
+import {useAuth} from './context/auth-context';
+import {useAsync} from './utils/hooks';
 
 function LoginForm({onSubmit, submitButton}) {
-  const {isLoading, isError, error, run} = useAsync()
+  const {isLoading, isError, error, run} = useAsync();
   function handleSubmit(event) {
-    event.preventDefault()
-    const {username, password} = event.target.elements
+    event.preventDefault();
+    const {username, password} = event.target.elements;
 
     run(
       onSubmit({
         username: username.value,
         password: password.value,
       }),
-    )
+    );
   }
 
   return (
@@ -56,11 +62,11 @@ function LoginForm({onSubmit, submitButton}) {
       </div>
       {isError ? <ErrorMessage error={error} /> : null}
     </form>
-  )
+  );
 }
 
 function UnauthenticatedApp() {
-  const {login, register} = useAuth()
+  const {login, register} = useAuth();
   return (
     <div
       css={{
@@ -105,12 +111,12 @@ function UnauthenticatedApp() {
         </Modal>
       </div>
     </div>
-  )
+  );
 }
 
 // 🐨 change this to a default export
-export {UnauthenticatedApp}
+export default UnauthenticatedApp;
 
 // 🐨 Unfortunately, to make this work for our workshop,
 // you need to add this to src/unauthenticated-app.js:
-// export {default} from './unauthenticated-app.exercise'
+// export {default} from './unauthenticated-app.exercise';

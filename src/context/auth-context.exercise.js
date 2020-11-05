@@ -1,26 +1,26 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx} from '@emotion/core';
 
-import * as React from 'react'
-import * as auth from 'auth-provider'
-import {client} from 'utils/api-client'
-import {useAsync} from 'utils/hooks'
-import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
+import * as React from 'react';
+import * as auth from 'auth-provider';
+import {client} from 'utils/api-client';
+import {useAsync} from 'utils/hooks';
+import {FullPageSpinner, FullPageErrorFallback} from 'components/lib';
 
 async function getUser() {
-  let user = null
+  let user = null;
 
-  const token = await auth.getToken()
+  const token = await auth.getToken();
   if (token) {
-    const data = await client('me', {token})
-    user = data.user
+    const data = await client('me', {token});
+    user = data.user;
   }
 
-  return user
+  return user;
 }
 
-const AuthContext = React.createContext()
-AuthContext.displayName = 'AuthContext'
+const AuthContext = React.createContext();
+AuthContext.displayName = 'AuthContext';
 
 function AuthProvider(props) {
   const {
@@ -33,51 +33,63 @@ function AuthProvider(props) {
     run,
     setData,
     status,
-  } = useAsync()
+  } = useAsync();
 
   React.useEffect(() => {
-    run(getUser())
-  }, [run])
+    run(getUser());
+  }, [run]);
 
-  const login = form => auth.login(form).then(user => setData(user))
-  const register = form => auth.register(form).then(user => setData(user))
-  const logout = () => {
-    auth.logout()
-    setData(null)
-  }
+  const login = React.useCallback(
+    form => auth.login(form).then(user => setData(user)),
+    [setData],
+  );
+  const register = React.useCallback(
+    form => auth.register(form).then(user => setData(user)),
+    [setData],
+  );
+  const logout = React.useCallback(() => {
+    auth.logout();
+    setData(null);
+  }, [setData]);
+
+  const value = React.useMemo(() => ({user, login, logout, register}), [
+    login,
+    logout,
+    register,
+    user,
+  ]);
 
   if (isLoading || isIdle) {
-    return <FullPageSpinner />
+    return <FullPageSpinner />;
   }
 
   if (isError) {
-    return <FullPageErrorFallback error={error} />
+    return <FullPageErrorFallback error={error} />;
   }
 
   if (isSuccess) {
-    const value = {user, login, register, logout}
-    return <AuthContext.Provider value={value} {...props} />
+    return <AuthContext.Provider value={value} {...props} />;
   }
 
-  throw new Error(`Unhandled status: ${status}`)
+  throw new Error(`Unhandled status: ${status}`);
 }
 
 function useAuth() {
-  const context = React.useContext(AuthContext)
+  const context = React.useContext(AuthContext);
   if (context === undefined) {
-    throw new Error(`useAuth must be used within a AuthProvider`)
+    throw new Error(`useAuth must be used within a AuthProvider`);
   }
-  return context
+  return context;
 }
 
 function useClient() {
   const {
     user: {token},
-  } = useAuth()
+  } = useAuth();
   return React.useCallback(
     (endpoint, config) => client(endpoint, {...config, token}),
     [token],
-  )
+  );
 }
 
-export {AuthProvider, useAuth, useClient}
+export {AuthProvider, useAuth, useClient};
