@@ -247,6 +247,25 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "vasilii-kovalev",
+      "name": "Vasilii Kovalev",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/10310491?v=4",
+      "profile": "https://vk.com/vasilii_kovalev",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "p10ns11y",
+      "name": "Peramanathan Sathyamoorthy",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9104920?v=4",
+      "profile": "http://twitter.com/peramanathan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
